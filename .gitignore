@@ -19,3 +19,10 @@ Thumbs.db
 # 依存関係（必要に応じて）
 node_modules/
 
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+*.cache
+

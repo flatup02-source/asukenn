@@ -84,6 +84,13 @@
     </a>
   </main>
 
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFunctions } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
+    
+    // Firebase設定は scripts/firebase.js で読み込まれます
+  </script>
   <script src="/scripts/firebase.js" type="module"></script>
   <script src="/scripts/main.js" type="module"></script>
 </body>

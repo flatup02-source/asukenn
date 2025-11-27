@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 食事記録の読み書き
+    match /meal_logs/{document} {
+      allow read: if true; // 全員が読み取り可能（本番環境では認証を追加）
+      allow write: if true; // 全員が書き込み可能（本番環境では認証を追加）
+    }
+  }
+}
+

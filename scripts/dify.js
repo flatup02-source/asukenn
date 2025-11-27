@@ -1,83 +1,73 @@
 // Dify API Service
-// Netlify Function経由でDify APIを呼び出します
+// Google Cloud Functions経由でFirebase Storage → Dify APIを呼び出します
 
-const NETLIFY_FUNCTION_URL = '/.netlify/functions/analyze-meal';
-
-/**
- * 画像ファイルをBase64に変換
- */
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      // data:image/jpeg;base64, の部分を除去
-      const base64 = reader.result.split(',')[1];
-      resolve(base64);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
+import { 
+  analyzeMealFunction, 
+  uploadMealPhotoFunction,
+  fileToBase64 
+} from './firebase.js';
 
 /**
- * Analyzes meal using Dify API via Netlify Function
+ * Analyzes meal using Dify API via Google Cloud Functions
+ * 画像はFirebase Storageに保存され、Cloud Function経由でDify APIに送信されます
+ * 
  * @param {File} photoFile - The image file (optional)
  * @param {string} textDescription - The text description
  * @param {string} mealType - The meal type (breakfast, lunch, dinner, snack)
  * @returns {Promise<Object>} - Structured analysis result
  */
 export async function analyzeMeal(photoFile, textDescription, mealType = '') {
-  console.log("Analyzing meal via Netlify Function...", { 
+  console.log("Analyzing meal via Google Cloud Functions...", { 
     photoFile, 
     textDescription, 
     mealType 
   });
 
   try {
-    // 画像をBase64に変換（ある場合）
-    let photoBase64 = null;
+    let photoPath = null;
+
+    // 画像がある場合は、まずFirebase Storageにアップロード
     if (photoFile) {
-      photoBase64 = await fileToBase64(photoFile);
+      try {
+        // 画像をBase64に変換
+        const photoBase64 = await fileToBase64(photoFile);
+        
+        // Cloud Function経由でFirebase Storageにアップロード
+        const uploadResult = await uploadMealPhotoFunction({
+          imageBase64: photoBase64,
+          fileName: photoFile.name,
+          contentType: photoFile.type || 'image/jpeg',
+        });
+
+        photoPath = uploadResult.data.photoPath;
+        console.log("Photo uploaded to Firebase Storage:", photoPath);
+      } catch (uploadError) {
+        console.error("Photo upload error:", uploadError);
+        // 画像アップロードエラーは続行（テキストのみで分析）
+      }
     }
 
-    // Netlify Functionを呼び出し
-    const response = await fetch(NETLIFY_FUNCTION_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        textDescription: textDescription || '',
-        photoBase64: photoBase64,
-        mealType: mealType,
-      }),
+    // Cloud Function経由でDify APIを呼び出し
+    const result = await analyzeMealFunction({
+      textDescription: textDescription || '',
+      photoPath: photoPath, // Firebase Storageのパス
+      mealType: mealType,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    
-    // エラーレスポンスのチェック
-    if (result.error) {
-      throw new Error(result.error);
-    }
-
-    console.log("Analysis result:", result);
-    return result;
+    console.log("Analysis result:", result.data);
+    return result.data;
 
   } catch (error) {
     console.error("Error analyzing meal:", error);
     
     // エラー時はモックレスポンスを返す（開発用）
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' || !error.code) {
       console.warn("Using mock response due to error");
       return getMockResponse(textDescription);
     }
     
-    throw error;
+    // Firebase Functionsのエラーを適切に処理
+    throw new Error(error.message || '食事分析中にエラーが発生しました');
   }
 }
 

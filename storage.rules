@@ -1,0 +1,11 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // 食事写真のアップロードを許可
+    match /meal-photos/{userId}/{allPaths=**} {
+      allow read: if true; // 全員が読み取り可能
+      allow write: if true; // 全員が書き込み可能（本番環境では認証を追加）
+    }
+  }
+}
+
