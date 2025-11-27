@@ -87,7 +87,7 @@ async function handleAnalyze(e) {
     resultSection.scrollIntoView({ behavior: 'smooth' });
 
     try {
-        currentAnalysis = await analyzeMeal(photo, text);
+        currentAnalysis = await analyzeMeal(photo, text, mealType);
         currentAnalysis.mealType = mealType; // Add meal type to analysis
         renderResult(currentAnalysis);
     } catch (error) {

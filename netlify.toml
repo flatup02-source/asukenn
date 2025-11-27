@@ -1,6 +1,7 @@
 [build]
   # 静的サイトなのでビルドコマンドは不要
   publish = "."
+  functions = "netlify/functions"
 
 # リダイレクト設定は _redirects ファイルで管理
 

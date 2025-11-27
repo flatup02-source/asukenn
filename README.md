@@ -1,75 +1,57 @@
-# Strongest Nutritionist AI
+# 最強の栄養管理師AI
 
-最強の栄養管理師AIアプリ - 食事記録と栄養分析アプリケーション
+食事記録と栄養分析アプリケーション
+
+## 機能
+
+- 📊 日次PFCバランス表示
+- 🍽 食事記録（朝食、昼食、夕食、間食）
+- 📷 写真アップロード機能
+- 🤖 AI栄養分析（Dify API連携予定）
+- 📱 レスポンシブデザイン
 
 ## デプロイ方法（Netlify）
 
-### 方法1: Netlify CLIを使用
+### Git連携による自動デプロイ（推奨）
 
-1. Netlify CLIをインストール（未インストールの場合）
-```bash
-npm install -g netlify-cli
-```
+1. GitHub/GitLab/Bitbucketにリポジトリをプッシュ
+2. [Netlify](https://app.netlify.com)にログイン
+3. 「Add new site」→「Import from Git」を選択
+4. リポジトリを選択
+5. ビルド設定：
+   - **Base directory**: （空白 - リポジトリのルートがasken_cloneの場合）
+   - **Publish directory**: `.`
+   - **Build command**: （空白 - 静的サイトなので不要）
+6. 「Deploy site」をクリック
 
-2. Netlifyにログイン
-```bash
-netlify login
-```
+これで、Gitにプッシュするたびに自動的にNetlifyにデプロイされます！
 
-3. プロジェクトディレクトリでデプロイ
-```bash
-cd asken_clone
-netlify deploy --prod
-```
-
-### 方法2: Netlify Web UIを使用（推奨）
+### 手動デプロイ
 
 1. [Netlify](https://app.netlify.com)にログイン
 2. "Add new site" → "Deploy manually" を選択
 3. **`asken_clone` フォルダの中身**をドラッグ&ドロップ
-   - ⚠️ 注意: `asken_clone`フォルダ自体ではなく、**フォルダの中身**（index.html、styles、scriptsなど）をドラッグ&ドロップしてください
-4. デプロイ完了！
-
-**404エラーが出る場合の対処法：**
-- Netlifyのサイト設定で「Publish directory」が `.` になっているか確認
-- または、`asken_clone`フォルダ全体をデプロイした場合は、Netlifyの設定で「Base directory」を `asken_clone` に設定
-
-### 方法3: Git連携（推奨）
-
-1. GitHub/GitLab/Bitbucketにリポジトリをプッシュ
-2. Netlifyで "Import from Git" を選択
-3. リポジトリを選択
-4. ビルド設定：
-   - **Base directory**: `asken_clone`（またはルートに配置している場合は空白）
-   - **Publish directory**: `asken_clone`（または `.`）
-   - **Build command**: （空白 - 静的サイトなので不要）
-5. "Deploy site" をクリック
 
 ## ファイル構造
 
 ```
 asken_clone/
 ├── index.html          # ダッシュボード
-├── log.html            # 食事記録ページ
+├── log.html           # 食事記録ページ
 ├── scripts/
-│   ├── main.js         # ダッシュボードロジック
-│   ├── log.js          # 食事記録ロジック
-│   ├── dify.js         # Dify API連携（モック）
-│   └── firebase.js      # Firebase設定（プレースホルダー）
+│   ├── main.js        # ダッシュボードロジック
+│   ├── log.js         # 食事記録ロジック
+│   ├── dify.js        # Dify API連携（モック）
+│   └── firebase.js    # Firebase設定（プレースホルダー）
 ├── styles/
-│   ├── index.css       # レイアウトスタイル
-│   └── theme.css       # テーマスタイル
+│   ├── index.css      # レイアウトスタイル
+│   └── theme.css      # テーマスタイル
 ├── data/
-│   └── foods.json      # 食品データ
-└── netlify.toml        # Netlify設定
+│   └── foods.json     # 食品データ
+├── netlify.toml       # Netlify設定
+├── _redirects         # Netlifyリダイレクト設定
+└── README.md          # このファイル
 ```
-
-## 機能
-
-- 📊 日次PFCバランス表示
-- 🍽 食事記録
-- 🤖 AI栄養分析（Dify API連携予定）
-- 📱 レスポンシブデザイン
 
 ## 開発
 
@@ -84,3 +66,8 @@ npx serve asken_clone
 
 ブラウザで `http://localhost:8000` を開く
 
+## 技術スタック
+
+- HTML5 / CSS3 / JavaScript (ES6+)
+- LocalStorage（データ保存）
+- Netlify（ホスティング）
