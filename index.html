@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>最強の栄養管理師AI</title>
+  <link rel="stylesheet" href="/styles/index.css" />
+  <link rel="stylesheet" href="/styles/theme.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Inter:wght@400;600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <header class="header">
+    <h1>最強の栄養管理師AI</h1>
+    <nav class="nav">
+      <a href="/" class="active">ダッシュボード</a>
+      <a href="/log.html">食事記録</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <!-- Hero Section -->
+    <section class="hero card animate-fade-in">
+      <h2 class="text-center mb-2">🔥 今日のモチベーション</h2>
+      <p id="heroMessage" class="text-center text-muted">"筋肉はキッチンで作られる！今日も栄養目標を達成しよう！"</p>
+    </section>
+
+    <!-- Summary Card -->
+    <section class="summary-card card animate-fade-in" style="animation-delay: 0.1s;">
+      <h2 class="mb-2">📊 本日のPFCバランス</h2>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span class="label">カロリー</span>
+          <span class="value"><span id="calCurrent">0</span> / <span id="calGoal">2200</span> kcal</span>
+          <div class="progress-bar">
+            <div class="fill" id="calFill" style="width: 0%"></div>
+          </div>
+        </div>
+        <div class="pfc-container">
+          <div class="pfc-item">
+            <span class="pfc-label">P (タンパク質)</span>
+            <span class="pfc-val" id="valP">0g</span>
+          </div>
+          <div class="pfc-item">
+            <span class="pfc-label">F (脂質)</span>
+            <span class="pfc-val" id="valF">0g</span>
+          </div>
+          <div class="pfc-item">
+            <span class="pfc-label">C (炭水化物)</span>
+            <span class="pfc-val" id="valC">0g</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meal Type Tabs -->
+    <section class="meal-tabs card animate-fade-in" style="animation-delay: 0.15s;">
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-meal-type="all">すべて</button>
+        <button class="tab-btn" data-meal-type="breakfast">🌅 朝食</button>
+        <button class="tab-btn" data-meal-type="lunch">☀️ 昼食</button>
+        <button class="tab-btn" data-meal-type="dinner">🌙 夕食</button>
+        <button class="tab-btn" data-meal-type="snack">🍪 間食</button>
+      </div>
+    </section>
+
+    <!-- Recent Logs -->
+    <section class="recent-logs card animate-fade-in" style="animation-delay: 0.2s;">
+      <h2 class="mb-2">🍽 今日の食事記録</h2>
+      <ul id="mealList" class="meal-list">
+        <!-- JS will populate this -->
+        <li class="empty-state">まだ食事が記録されていません。記録を始めましょう！</li>
+      </ul>
+    </section>
+
+    <!-- Floating Action Button -->
+    <a href="/log.html" class="fab btn-primary">
+      <span>+ 食事を記録</span>
+    </a>
+  </main>
+
+  <script src="/scripts/firebase.js" type="module"></script>
+  <script src="/scripts/main.js" type="module"></script>
+</body>
+
+</html>

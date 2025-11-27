@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>食事記録 - 最強の栄養管理師AI</title>
+    <link rel="stylesheet" href="/styles/index.css" />
+    <link rel="stylesheet" href="/styles/theme.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Inter:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <header class="header">
+        <h1>食事記録</h1>
+        <nav class="nav">
+            <a href="/">ダッシュボード</a>
+            <a href="/log.html" class="active">食事記録</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <!-- Input Section -->
+        <section class="card animate-fade-in">
+            <h2 class="mb-2">📸 何を食べましたか？</h2>
+            <form id="mealForm">
+                <!-- Meal Type Selection -->
+                <div class="form-group mb-2">
+                    <label class="label mb-1">食事タイプ <span class="text-danger">*</span></label>
+                    <div class="meal-type-buttons">
+                        <button type="button" class="meal-type-btn" data-type="breakfast">
+                            <span class="meal-type-icon">🌅</span>
+                            <span class="meal-type-label">朝食</span>
+                        </button>
+                        <button type="button" class="meal-type-btn" data-type="lunch">
+                            <span class="meal-type-icon">☀️</span>
+                            <span class="meal-type-label">昼食</span>
+                        </button>
+                        <button type="button" class="meal-type-btn" data-type="dinner">
+                            <span class="meal-type-icon">🌙</span>
+                            <span class="meal-type-label">夕食</span>
+                        </button>
+                        <button type="button" class="meal-type-btn" data-type="snack">
+                            <span class="meal-type-icon">🍪</span>
+                            <span class="meal-type-label">間食</span>
+                        </button>
+                    </div>
+                    <input type="hidden" id="mealType" value="" required />
+                </div>
+
+                <div class="form-group mb-2">
+                    <label class="label mb-1">写真 <span class="text-muted">(任意)</span></label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="mealPhoto" accept="image/*" capture="environment" class="file-input" />
+                        <div class="file-upload-ui">
+                            <span class="upload-icon">📷</span>
+                            <span>タップして写真を撮影またはアップロード</span>
+                        </div>
+                    </div>
+                    <div id="previewContainer" class="hidden mt-2">
+                        <img id="photoPreview" src="" alt="プレビュー" class="photo-preview" />
+                        <button type="button" id="removePhoto" class="btn-remove-photo">× 写真を削除</button>
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="label mb-1">食事の内容 <span class="text-danger">*</span></label>
+                    <textarea id="mealText" class="text-area" rows="4"
+                        placeholder="例: 鶏胸肉（皮なし）150g、白米200g、ブロッコリー100g"></textarea>
+                    <p class="text-muted text-sm mt-1">💡 ヒント: 「皮なし」「油少なめ」など具体的に書くと、より正確に分析できます。</p>
+                </div>
+
+                <button type="submit" id="analyzeBtn" class="btn btn-primary w-100">
+                    AIで分析する 🤖
+                </button>
+            </form>
+        </section>
+
+        <!-- Result Section (Hidden initially) -->
+        <section id="resultSection" class="card hidden animate-fade-in">
+            <h2 class="mb-2">🧠 分析結果</h2>
+            <div id="aiResponse" class="ai-response-box mb-4">
+                <!-- AI Content goes here -->
+                <div class="loading-spinner">分析中...</div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="confirmBtn" class="btn btn-primary w-100 mb-2">記録を確定</button>
+                <button id="retryBtn" class="btn btn-secondary w-100">編集 / 再分析</button>
+            </div>
+        </section>
+    </main>
+
+    <style>
+        .file-upload-wrapper {
+            position: relative;
+            height: 120px;
+            border: 2px dashed #ddd;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--primary);
+        }
+
+        .file-input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-ui {
+            pointer-events: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .text-area {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .text-area:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+        }
+
+        .w-100 {
+            width: 100%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .photo-preview {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+        }
+
+        .ai-response-box {
+            background: #f0f7ff;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--secondary);
+            white-space: pre-wrap;
+        }
+
+        .text-sm {
+            font-size: 0.85rem;
+        }
+
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+    </style>
+
+    <script src="/scripts/firebase.js" type="module"></script>
+    <script src="/scripts/dify.js" type="module"></script>
+    <script src="/scripts/log.js" type="module"></script>
+</body>
+
+</html>
