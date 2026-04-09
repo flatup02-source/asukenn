@@ -1,28 +1,42 @@
-# 環境変数
+# 環境設定
 .env
 .env.local
 .env.*.local
-
-# ログ
-*.log
-
-# OS
-.DS_Store
-Thumbs.db
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# 依存関係（必要に応じて）
+# OS
+.DS_Store
+Thumbs.db
+
+# ログ・キャッシュ
+*.log
+.cache/
+tmp/
+
+# Node.js（必要に応じて）
 node_modules/
+npm-debug.log
 
-# Firebase
-.firebase/
-firebase-debug.log
-firestore-debug.log
-ui-debug.log
-*.cache
+# Python（必要に応じて）
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
 
+# Docker
+.docker/
+
+# Obsidian（ローカル設定のみ除外）
+obsidian/.obsidian/
+obsidian/.DS_Store
+
+# その他
+config/private/
+secrets/
