@@ -26,3 +26,9 @@ firestore-debug.log
 ui-debug.log
 *.cache
 
+# Typefully / x-post skill
+.typefully/
+.claude/skills/x-post/.env
+.claude/skills/x-post/cache/
+.mcp.local.json
+
