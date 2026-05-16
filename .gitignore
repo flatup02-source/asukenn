@@ -30,5 +30,7 @@ ui-debug.log
 .typefully/
 .claude/skills/x-post/.env
 .claude/skills/x-post/cache/
+.claude/skills/weekly-plan/themes/*
+!.claude/skills/weekly-plan/themes/.gitkeep
 .mcp.local.json
 
