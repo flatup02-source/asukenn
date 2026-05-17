@@ -1,0 +1,9 @@
+{
+  "_comment": "Copy to .mcp.json (or merge into your existing .mcp.json) to enable the official Typefully MCP server. URL is issued at: https://typefully.com -> Settings -> Integrations -> MCP.",
+  "mcpServers": {
+    "typefully": {
+      "type": "http",
+      "url": "https://mcp.typefully.com/REPLACE_WITH_YOUR_TOKEN"
+    }
+  }
+}
