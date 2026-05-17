@@ -33,4 +33,5 @@ ui-debug.log
 .claude/skills/weekly-plan/themes/*
 !.claude/skills/weekly-plan/themes/.gitkeep
 .mcp.local.json
+.mcp.json
 
