@@ -131,18 +131,33 @@ function renderMealList(logs) {
         li.className = 'meal-item';
         const pfc = log.pfc || { p: 0, f: 0, c: 0 };
         const mealTypeLabel = MEAL_TYPE_LABELS[log.mealType] || '';
-        li.innerHTML = `
-      <div class="meal-info">
-        <div class="meal-header">
-          <span class="meal-type-badge">${mealTypeLabel}</span>
-          <h4>${log.menu || '食事'}</h4>
-        </div>
-        <div class="meal-meta">${log.calories || 0} kcal (P:${pfc.p}g F:${pfc.f}g C:${pfc.c}g)</div>
-      </div>
-      <div class="meal-time text-muted text-sm">
-        ${new Date(log.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })}
-      </div>
-    `;
+
+        const info = document.createElement('div');
+        info.className = 'meal-info';
+
+        const header = document.createElement('div');
+        header.className = 'meal-header';
+
+        const badge = document.createElement('span');
+        badge.className = 'meal-type-badge';
+        badge.textContent = mealTypeLabel;
+
+        const title = document.createElement('h4');
+        title.textContent = log.menu || '食事';
+
+        header.append(badge, title);
+
+        const meta = document.createElement('div');
+        meta.className = 'meal-meta';
+        meta.textContent = `${log.calories || 0} kcal (P:${pfc.p}g F:${pfc.f}g C:${pfc.c}g)`;
+
+        info.append(header, meta);
+
+        const time = document.createElement('div');
+        time.className = 'meal-time text-muted text-sm';
+        time.textContent = new Date(log.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+
+        li.append(info, time);
         mealListEl.appendChild(li);
     });
 }
