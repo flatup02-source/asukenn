@@ -60,13 +60,11 @@ export async function analyzeMeal(photoFile, textDescription, mealType = '') {
   } catch (error) {
     console.error("Error analyzing meal:", error);
     
-    // エラー時はモックレスポンスを返す（開発用）
-    if (process.env.NODE_ENV === 'development' || !error.code) {
+    if (!error.code) {
       console.warn("Using mock response due to error");
       return getMockResponse(textDescription);
     }
-    
-    // Firebase Functionsのエラーを適切に処理
+
     throw new Error(error.message || '食事分析中にエラーが発生しました');
   }
 }

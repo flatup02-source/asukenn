@@ -100,17 +100,22 @@ async function handleAnalyze(e) {
 }
 
 function renderResult(data) {
-    // Format the raw output or use structured data
-    // For now, we use the raw_output from the persona if available, else construct it
-    const displayContent = data.raw_output || `
-    <strong>${data.menu}</strong><br>
-    Calories: ${data.calories}kcal<br>
-    P: ${data.pfc.p}g, F: ${data.pfc.f}g, C: ${data.pfc.c}g<br>
-    <br>
-    <em>${data.advice}</em>
-  `;
+    aiResponseBox.replaceChildren();
 
-    aiResponseBox.innerHTML = displayContent;
+    if (data.raw_output) {
+        aiResponseBox.textContent = data.raw_output;
+        return;
+    }
+
+    const menu = document.createElement('strong');
+    menu.textContent = data.menu ?? '';
+    const meta = document.createTextNode(
+        `\nCalories: ${data.calories}kcal\nP: ${data.pfc.p}g, F: ${data.pfc.f}g, C: ${data.pfc.c}g\n\n`
+    );
+    const advice = document.createElement('em');
+    advice.textContent = data.advice ?? '';
+
+    aiResponseBox.append(menu, meta, advice);
 }
 
 function handleConfirm() {
